@@ -1,0 +1,51 @@
+@model LibraryMS.Models.Order
+@{
+    ViewData["Title"] = "Sipariş Düzenle";
+}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold"><i class="bi bi-pencil-square me-2 text-warning"></i>Sipariş Düzenle</h2>
+    <a asp-action="OrderIndex" class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-1"></i>Geri</a>
+</div>
+<div class="card">
+    <div class="card-body">
+        <form asp-action="OrderEdit">
+            <input type="hidden" asp-for="OrderId" />
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label asp-for="CustomerName" class="form-label fw-semibold"></label>
+                    <input asp-for="CustomerName" class="form-control" />
+                    <span asp-validation-for="CustomerName" class="text-danger small"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="CustomerEmail" class="form-label fw-semibold"></label>
+                    <input asp-for="CustomerEmail" class="form-control" type="email" />
+                    <span asp-validation-for="CustomerEmail" class="text-danger small"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="BookId" class="form-label fw-semibold"><i class="bi bi-book me-1"></i>Kitap</label>
+                    <select asp-for="BookId" asp-items="ViewBag.BookId" class="form-select"></select>
+                    <span asp-validation-for="BookId" class="text-danger small"></span>
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="Quantity" class="form-label fw-semibold"></label>
+                    <input asp-for="Quantity" class="form-control" type="number" min="1" />
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="Status" class="form-label fw-semibold"></label>
+                    <select asp-for="Status" class="form-select">
+                        <option value="Beklemede">Beklemede</option>
+                        <option value="Tamamlandı">Tamamlandı</option>
+                        <option value="İptal">İptal</option>
+                    </select>
+                </div>
+            </div>
+            <hr />
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-warning"><i class="bi bi-floppy me-1"></i>Güncelle</button>
+                <a asp-action="OrderIndex" class="btn btn-outline-secondary"><i class="bi bi-x-circle me-1"></i>İptal</a>
+            </div>
+        </form>
+    </div>
+</div>
+@section Scripts { @{await Html.RenderPartialAsync("_ValidationScriptsPartial");} }

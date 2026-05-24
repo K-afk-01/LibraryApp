@@ -1,0 +1,19 @@
+{
+  "Version": 1,
+  "Hash": "hnlVlvdZm1usOSzwkfVjJwrs2gVKmRECHOW21fljBKo=",
+  "Source": "LibraryMS",
+  "BasePath": "_content/LibraryMS",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "LibraryMS\\wwwroot",
+      "Source": "LibraryMS",
+      "ContentRoot": "C:\\Users\\abdul\\OneDrive\\Masaüstü\\LibraryMS\\wwwroot\\",
+      "BasePath": "_content/LibraryMS",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": []
+}
