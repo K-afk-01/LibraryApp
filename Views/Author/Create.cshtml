@@ -2,43 +2,51 @@
 @{
     ViewData["Title"] = "Yeni Yazar";
 }
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="fw-bold"><i class="bi bi-person-plus me-2 text-success"></i>Yeni Yazar Ekle</h2>
-    <a asp-action="Index" class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-1"></i>Geri</a>
+<div class="d-flex align-items-center gap-2 mb-2">
+    <a asp-action="Index" class="lms-icon-action" title="Geri"><i class="bi bi-arrow-left"></i></a>
+    <h1 class="lms-page-title">Yeni Yazar Ekle</h1>
 </div>
-<div class="card">
-    <div class="card-body">
+<p class="lms-page-sub" style="margin-left:44px;margin-bottom:18px;">Sisteme yeni bir yazar profili oluşturun.</p>
+
+<div class="lms-card">
+    <div class="lms-card-body">
         <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger" style="border:none;background:#ffdad6;color:#93000a;border-radius:8px;"></div>
             <div class="row g-3">
                 <div class="col-md-6">
-                    <label asp-for="FirstName" class="form-label fw-semibold"></label>
-                    <input asp-for="FirstName" class="form-control" placeholder="Ad" />
+                    <label asp-for="FirstName" class="lms-label">Ad</label>
+                    <input asp-for="FirstName" class="lms-input" placeholder="Yazarın adı" />
                     <span asp-validation-for="FirstName" class="text-danger small"></span>
                 </div>
                 <div class="col-md-6">
-                    <label asp-for="LastName" class="form-label fw-semibold"></label>
-                    <input asp-for="LastName" class="form-control" placeholder="Soyad" />
+                    <label asp-for="LastName" class="lms-label">Soyad</label>
+                    <input asp-for="LastName" class="lms-input" placeholder="Yazarın soyadı" />
                     <span asp-validation-for="LastName" class="text-danger small"></span>
                 </div>
                 <div class="col-md-6">
-                    <label asp-for="Email" class="form-label fw-semibold"></label>
-                    <input asp-for="Email" class="form-control" type="email" placeholder="ornek@mail.com" />
+                    <label asp-for="Email" class="lms-label">E-posta</label>
+                    <div style="position:relative;">
+                        <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:#76777f;"><i class="bi bi-at"></i></span>
+                        <input asp-for="Email" class="lms-input" type="email" placeholder="ornek@email.com" style="padding-left:34px;" />
+                    </div>
                     <span asp-validation-for="Email" class="text-danger small"></span>
                 </div>
                 <div class="col-md-6">
-                    <label asp-for="BirthDate" class="form-label fw-semibold"></label>
-                    <input asp-for="BirthDate" class="form-control" type="date" />
+                    <label asp-for="BirthDate" class="lms-label">Doğum Tarihi</label>
+                    <input asp-for="BirthDate" class="lms-input" type="date" />
                 </div>
                 <div class="col-12">
-                    <label asp-for="Bio" class="form-label fw-semibold"></label>
-                    <textarea asp-for="Bio" class="form-control" rows="3" placeholder="Yazar hakkında kısa bilgi"></textarea>
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                        <label asp-for="Bio" class="lms-label" style="margin-bottom:0;">Biyografi</label>
+                        <small style="color:#76777f;">İsteğe bağlı</small>
+                    </div>
+                    <textarea asp-for="Bio" class="lms-textarea" rows="4" placeholder="Yazar hakkında kısa bir bilgi giriniz..."></textarea>
                 </div>
             </div>
-            <hr />
-            <div class="d-flex gap-2">
-                <button type="submit" class="btn btn-success"><i class="bi bi-floppy me-1"></i>Kaydet</button>
-                <a asp-action="Index" class="btn btn-outline-secondary"><i class="bi bi-x-circle me-1"></i>İptal</a>
+            <hr style="margin:24px 0;border-color:#e7e8ec;" />
+            <div class="d-flex justify-content-end gap-2">
+                <a asp-action="Index" class="lms-btn-outline">İptal</a>
+                <button type="submit" class="lms-btn-success"><i class="bi bi-floppy"></i>Kaydet</button>
             </div>
         </form>
     </div>

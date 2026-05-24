@@ -2,56 +2,72 @@
 @{
     ViewData["Title"] = "Kitap Raporu";
 }
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="fw-bold"><i class="bi bi-file-earmark-bar-graph me-2 text-success"></i>Kitap Raporu</h2>
-    <span class="badge bg-secondary fs-6"><i class="bi bi-gear me-1"></i>GetBookReport (Stored Procedure)</span>
+<div class="d-flex justify-content-between align-items-start mb-3 flex-wrap gap-2">
+    <div>
+        <h1 class="lms-page-title">
+            <i class="bi bi-bar-chart-fill" style="color:#2170e4;"></i>
+            Kitap Raporu
+            <span class="lms-badge lms-badge-blue" style="font-size:0.72rem;margin-left:8px;">GetBookReport (Stored Procedure)</span>
+        </h1>
+        <p class="lms-page-sub">Sistemdeki tüm kitapların detaylı güncel envanter ve durum analizi.</p>
+    </div>
+    <div class="d-flex gap-2">
+        <a href="#" class="lms-btn-outline"><i class="bi bi-download"></i>Dışa Aktar</a>
+        <a href="#" class="lms-btn-outline"><i class="bi bi-funnel"></i>Filtrele</a>
+    </div>
 </div>
-<div class="card">
-    <div class="card-header bg-success text-white">
-        <h5 class="mb-0"><i class="bi bi-table me-2"></i>Tüm Kitaplar - Detaylı Rapor</h5>
-    </div>
-    <div class="card-body p-0">
-        <div class="table-responsive">
-            <table class="table table-hover mb-0">
-                <thead class="table-light">
-                    <tr>
-                        <th><i class="bi bi-hash me-1"></i>#</th>
-                        <th><i class="bi bi-book me-1"></i>Kitap Adı</th>
-                        <th><i class="bi bi-upc me-1"></i>ISBN</th>
-                        <th><i class="bi bi-currency-dollar me-1"></i>Fiyat</th>
-                        <th><i class="bi bi-person me-1"></i>Yazar</th>
-                        <th><i class="bi bi-tag me-1"></i>Kategori</th>
-                        <th><i class="bi bi-boxes me-1"></i>Stok</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td>@item.BookId</td>
-                            <td class="fw-semibold">@item.Title</td>
-                            <td><code>@item.ISBN</code></td>
-                            <td><span class="badge bg-success">@item.Price.ToString("C2")</span></td>
-                            <td>@item.AuthorName</td>
-                            <td><span class="badge bg-primary">@item.CategoryName</span></td>
-                            <td>
-                                @if (item.Stock <= 5) {
-                                    <span class="badge bg-danger"><i class="bi bi-exclamation-triangle me-1"></i>@item.Stock</span>
-                                } else {
-                                    <span class="badge bg-success">@item.Stock</span>
-                                }
-                            </td>
-                        </tr>
-                    }
-                    @if (!Model.Any())
-                    {
-                        <tr><td colspan="7" class="text-center text-muted py-4"><i class="bi bi-inbox fs-3 d-block mb-2"></i>Henüz kitap bulunmamaktadır.</td></tr>
-                    }
-                </tbody>
-            </table>
+
+<div class="lms-card">
+    <div style="padding:14px 20px;border-bottom:1px solid var(--lms-border);background:#fafbfd;border-radius:12px 12px 0 0;display:flex;align-items:center;justify-content:space-between;">
+        <div style="font-weight:600;color:#081534;display:flex;align-items:center;gap:8px;">
+            <i class="bi bi-table"></i>Tüm Kitaplar - Detaylı Rapor
         </div>
+        <small style="color:#76777f;">Son güncelleme: Bugün</small>
     </div>
-    <div class="card-footer text-muted">
-        <small><i class="bi bi-info-circle me-1"></i>Bu rapor <strong>GetBookReport</strong> stored procedure kullanılarak oluşturulmuştur. Toplam: <strong>@Model.Count</strong> kitap</small>
+    <div class="table-responsive">
+        <table class="lms-table">
+            <thead>
+                <tr>
+                    <th>#ID</th>
+                    <th>Kitap Adı</th>
+                    <th>ISBN</th>
+                    <th>Fiyat</th>
+                    <th>Yazar</th>
+                    <th>Kategori</th>
+                    <th>Stok</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.BookId</td>
+                        <td style="font-weight:600;color:#081534;">@item.Title</td>
+                        <td style="color:#45464e;">@item.ISBN</td>
+                        <td style="font-weight:600;">@item.Price.ToString("C2")</td>
+                        <td>@item.AuthorName</td>
+                        <td><span class="lms-badge lms-badge-blue">@item.CategoryName</span></td>
+                        <td>
+                            @if (item.Stock <= 5)
+                            {
+                                <span class="lms-badge lms-badge-red"><i class="bi bi-exclamation-triangle"></i>@item.Stock</span>
+                            }
+                            else
+                            {
+                                <span class="lms-badge lms-badge-green">@item.Stock</span>
+                            }
+                        </td>
+                    </tr>
+                }
+                @if (!Model.Any())
+                {
+                    <tr><td colspan="7" class="text-center text-muted py-5"><i class="bi bi-inbox fs-3 d-block mb-2"></i>Henüz kitap bulunmamaktadır.</td></tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div style="padding:14px 20px;border-top:1px solid var(--lms-border);background:#fafbfd;border-radius:0 0 12px 12px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+        <small style="color:#76777f;"><i class="bi bi-info-circle me-1"></i>Bu rapor <strong>GetBookReport</strong> stored procedure kullanılarak oluşturulmuştur.</small>
+        <span class="lms-badge lms-badge-gray">Toplam: <strong>@Model.Count</strong> kitap</span>
     </div>
 </div>

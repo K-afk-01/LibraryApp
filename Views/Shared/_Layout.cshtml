@@ -1,3 +1,13 @@
+@{
+    var controller = ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
+    var action = ViewContext.RouteData.Values["action"]?.ToString() ?? "";
+    bool isHome = controller == "Home" && action == "Index";
+    bool isBooks = controller == "Book" && !action.StartsWith("Category");
+    bool isCategories = (controller == "Book" && action.StartsWith("Category")) || controller == "Category";
+    bool isAuthors = controller == "Author" && !action.StartsWith("Order");
+    bool isOrders = (controller == "Author" && action.StartsWith("Order")) || controller == "Order";
+    bool isReport = controller == "Home" && action == "Report";
+}
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -6,100 +16,319 @@
     <title>@ViewData["Title"] - LibraryMS</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <style>
-        body { background-color: #f8f9fa; }
-        .sidebar { min-height: 100vh; background: linear-gradient(180deg, #1a237e 0%, #283593 100%); }
-        .sidebar .nav-link { color: rgba(255,255,255,0.8); border-radius: 8px; margin: 2px 0; }
-        .sidebar .nav-link:hover, .sidebar .nav-link.active { background: rgba(255,255,255,0.15); color: #fff; }
-        .sidebar .nav-link i { width: 20px; }
-        .sidebar-brand { color: #fff; font-size: 1.3rem; font-weight: 700; padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.2); }
-        .main-content { padding: 1.5rem; }
-        .card { border: none; box-shadow: 0 2px 8px rgba(0,0,0,0.08); border-radius: 12px; }
-        .card-header { border-radius: 12px 12px 0 0 !important; }
-        .table-hover tbody tr:hover { background-color: #f0f4ff; }
-        .btn-action { padding: 4px 10px; font-size: 0.82rem; }
-        .stat-card { background: linear-gradient(135deg, #1a237e, #3949ab); color: white; border-radius: 12px; }
+        :root {
+            --lms-navy: #081534;
+            --lms-navy-2: #1e2a4a;
+            --lms-bg: #f8f9fd;
+            --lms-card: #ffffff;
+            --lms-border: #e7e8ec;
+            --lms-text: #191c1f;
+            --lms-muted: #76777f;
+            --lms-blue: #2170e4;
+            --lms-blue-soft: #dae2ff;
+        }
+        * { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+        body {
+            background-color: var(--lms-bg);
+            color: var(--lms-text);
+            margin: 0;
+            min-height: 100vh;
+        }
+        .lms-sidebar {
+            width: 260px;
+            min-width: 260px;
+            min-height: 100vh;
+            background: linear-gradient(180deg, #081534 0%, #1e2a4a 100%);
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+        }
+        .lms-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 20px 20px 18px;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+        .lms-brand-icon {
+            width: 38px; height: 38px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.08);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.1rem;
+            color: #fff;
+        }
+        .lms-brand-title { font-weight: 700; font-size: 1.05rem; line-height: 1.1; }
+        .lms-brand-sub { font-size: 0.72rem; opacity: 0.6; }
+        .lms-nav { list-style: none; padding: 12px 10px; margin: 0; flex-grow: 1; }
+        .lms-nav li { margin: 2px 0; }
+        .lms-nav a {
+            display: flex; align-items: center; gap: 12px;
+            padding: 10px 14px;
+            color: rgba(255,255,255,0.75);
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 0.92rem;
+            font-weight: 500;
+            border-left: 3px solid transparent;
+            transition: all 0.15s ease;
+        }
+        .lms-nav a:hover { background: rgba(255,255,255,0.06); color: #fff; }
+        .lms-nav a.active {
+            background: rgba(33,112,228,0.12);
+            color: #fff;
+            border-left-color: #2170e4;
+        }
+        .lms-nav a i { font-size: 1.1rem; width: 20px; text-align: center; }
+        .lms-sidebar-footer { padding: 14px 10px; border-top: 1px solid rgba(255,255,255,0.06); }
+        .lms-sidebar-footer a {
+            display: flex; align-items: center; gap: 12px;
+            padding: 10px 14px;
+            color: rgba(255,255,255,0.75);
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 0.92rem;
+            font-weight: 500;
+        }
+        .lms-sidebar-footer a:hover { background: rgba(255,255,255,0.06); color: #fff; }
+
+        .lms-main { flex-grow: 1; display: flex; flex-direction: column; min-width: 0; }
+        .lms-topbar {
+            background: #fff;
+            border-bottom: 1px solid var(--lms-border);
+            padding: 12px 28px;
+            display: flex; align-items: center; gap: 16px;
+            position: sticky; top: 0; z-index: 10;
+        }
+        .lms-search {
+            flex-grow: 1; max-width: 480px;
+            position: relative;
+        }
+        .lms-search input {
+            width: 100%;
+            border: 1px solid var(--lms-border);
+            border-radius: 999px;
+            background: #f2f3f7;
+            padding: 8px 16px 8px 38px;
+            font-size: 0.9rem;
+            outline: none;
+        }
+        .lms-search input:focus { border-color: var(--lms-blue); background: #fff; box-shadow: 0 0 0 3px rgba(33,112,228,0.1); }
+        .lms-search i {
+            position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+            color: var(--lms-muted); font-size: 0.95rem;
+        }
+        .lms-topbar-actions { margin-left: auto; display: flex; align-items: center; gap: 14px; }
+        .lms-icon-btn {
+            width: 38px; height: 38px; border-radius: 50%;
+            display: inline-flex; align-items: center; justify-content: center;
+            color: var(--lms-muted); background: transparent; border: none;
+            font-size: 1.1rem;
+        }
+        .lms-icon-btn:hover { background: #f2f3f7; color: var(--lms-text); }
+        .lms-avatar {
+            width: 36px; height: 36px; border-radius: 50%;
+            background: linear-gradient(135deg, #2170e4, #081534);
+            color: #fff; font-weight: 600; font-size: 0.82rem;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .lms-content { padding: 28px 32px; flex-grow: 1; }
+
+        /* Generic component styling */
+        .lms-page-title { font-size: 1.65rem; font-weight: 700; margin: 0; color: var(--lms-text); display: flex; align-items: center; gap: 12px; }
+        .lms-page-sub { color: var(--lms-muted); font-size: 0.92rem; margin-top: 4px; }
+        .lms-card {
+            background: var(--lms-card);
+            border: 1px solid var(--lms-border);
+            border-radius: 12px;
+            box-shadow: 0px 2px 4px rgba(30, 42, 74, 0.05);
+        }
+        .lms-card-body { padding: 20px 24px; }
+        .lms-table { width: 100%; border-collapse: collapse; }
+        .lms-table thead th {
+            text-align: left;
+            font-size: 0.78rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--lms-muted);
+            padding: 14px 20px;
+            border-bottom: 1px solid var(--lms-border);
+            background: #fafbfd;
+        }
+        .lms-table tbody td {
+            padding: 16px 20px;
+            border-bottom: 1px solid #f1f2f4;
+            font-size: 0.9rem;
+            vertical-align: middle;
+        }
+        .lms-table tbody tr:hover { background: #fafbfd; }
+        .lms-table tbody tr:last-child td { border-bottom: 0; }
+        .lms-badge { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 999px; font-size: 0.78rem; font-weight: 600; }
+        .lms-badge-blue { background: #dae8ff; color: #0058be; }
+        .lms-badge-green { background: #d6f5e3; color: #0b6b34; }
+        .lms-badge-red { background: #ffdad6; color: #93000a; }
+        .lms-badge-yellow { background: #fff4cc; color: #6e5300; }
+        .lms-badge-gray { background: #eef0f5; color: #45464e; }
+        .lms-btn-primary {
+            background: var(--lms-navy);
+            color: #fff;
+            border: none;
+            padding: 9px 18px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.88rem;
+            display: inline-flex; align-items: center; gap: 8px;
+            text-decoration: none;
+        }
+        .lms-btn-primary:hover { background: #1e2a4a; color: #fff; }
+        .lms-btn-success {
+            background: #16a34a; color: #fff; border: none;
+            padding: 9px 18px; border-radius: 8px; font-weight: 600;
+            font-size: 0.88rem; display: inline-flex; align-items: center; gap: 8px;
+            text-decoration: none;
+        }
+        .lms-btn-success:hover { background: #15803d; color: #fff; }
+        .lms-btn-warning {
+            background: #f59e0b; color: #fff; border: none;
+            padding: 9px 18px; border-radius: 8px; font-weight: 600;
+            font-size: 0.88rem; display: inline-flex; align-items: center; gap: 8px;
+            text-decoration: none;
+        }
+        .lms-btn-warning:hover { background: #d97706; color: #fff; }
+        .lms-btn-danger {
+            background: #dc2626; color: #fff; border: none;
+            padding: 9px 18px; border-radius: 8px; font-weight: 600;
+            font-size: 0.88rem; display: inline-flex; align-items: center; gap: 8px;
+            text-decoration: none;
+        }
+        .lms-btn-danger:hover { background: #b91c1c; color: #fff; }
+        .lms-btn-outline {
+            background: #fff; color: var(--lms-text);
+            border: 1px solid var(--lms-border);
+            padding: 9px 18px; border-radius: 8px; font-weight: 600;
+            font-size: 0.88rem; display: inline-flex; align-items: center; gap: 8px;
+            text-decoration: none;
+        }
+        .lms-btn-outline:hover { background: #f2f3f7; color: var(--lms-text); }
+        .lms-icon-action {
+            width: 32px; height: 32px; border-radius: 6px;
+            display: inline-flex; align-items: center; justify-content: center;
+            color: var(--lms-muted); background: transparent;
+            border: none; text-decoration: none; font-size: 0.95rem;
+        }
+        .lms-icon-action:hover { background: #f2f3f7; color: var(--lms-text); }
+        .lms-icon-action.danger:hover { background: #ffdad6; color: #93000a; }
+
+        .lms-input, .lms-select, .lms-textarea {
+            width: 100%; border: 1px solid #d1d5db;
+            border-radius: 8px; padding: 10px 14px;
+            font-size: 0.92rem; background: #f8f9fd;
+            outline: none;
+            transition: all 0.15s ease;
+        }
+        .lms-input:focus, .lms-select:focus, .lms-textarea:focus {
+            border-color: var(--lms-blue); background: #fff;
+            box-shadow: 0 0 0 3px rgba(33,112,228,0.15);
+        }
+        .lms-label { font-size: 0.85rem; font-weight: 600; color: var(--lms-text); margin-bottom: 6px; display: block; }
+        .lms-form-group { margin-bottom: 16px; }
+        .lms-avatar-circle {
+            width: 36px; height: 36px; border-radius: 50%;
+            background: #eef0f5; color: var(--lms-text);
+            display: inline-flex; align-items: center; justify-content: center;
+            font-size: 0.78rem; font-weight: 600;
+        }
     </style>
 </head>
 <body>
 @if (Context.Session.GetString("Username") != null)
 {
-<div class="d-flex">
-    <!-- Sidebar -->
-    <nav class="sidebar d-flex flex-column p-3" style="width:240px; min-width:240px;">
-        <div class="sidebar-brand mb-3">
-            <i class="bi bi-book-half me-2"></i>LibraryMS
-        </div>
-        <ul class="nav flex-column gap-1">
-            <li class="nav-item">
-                <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString()=="Home"?"active":"")" asp-controller="Home" asp-action="Index">
-                    <i class="bi bi-house-door me-2"></i>Ana Sayfa
-                </a>
-            </li>
-            <li class="nav-item mt-2">
-                <small class="text-white-50 text-uppercase px-2" style="font-size:0.7rem;">Kitap Yönetimi</small>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString()=="Book" && ViewContext.RouteData.Values["action"]?.ToString()!="CategoryIndex"?"active":"")" asp-controller="Book" asp-action="Index">
-                    <i class="bi bi-book me-2"></i>Kitaplar
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link @(ViewContext.RouteData.Values["action"]?.ToString()=="CategoryIndex"?"active":"")" asp-controller="Book" asp-action="CategoryIndex">
-                    <i class="bi bi-tags me-2"></i>Kategoriler
-                </a>
-            </li>
-            <li class="nav-item mt-2">
-                <small class="text-white-50 text-uppercase px-2" style="font-size:0.7rem;">Yazar & Sipariş</small>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString()=="Author" && ViewContext.RouteData.Values["action"]?.ToString()!="OrderIndex"?"active":"")" asp-controller="Author" asp-action="Index">
-                    <i class="bi bi-person-lines-fill me-2"></i>Yazarlar
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link @(ViewContext.RouteData.Values["action"]?.ToString()=="OrderIndex"?"active":"")" asp-controller="Author" asp-action="OrderIndex">
-                    <i class="bi bi-cart3 me-2"></i>Siparişler
-                </a>
-            </li>
-            <li class="nav-item mt-2">
-                <small class="text-white-50 text-uppercase px-2" style="font-size:0.7rem;">Raporlar</small>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link @(ViewContext.RouteData.Values["action"]?.ToString()=="Report"?"active":"")" asp-controller="Home" asp-action="Report">
-                    <i class="bi bi-file-earmark-bar-graph me-2"></i>Kitap Raporu
-                </a>
-            </li>
-        </ul>
-        <div class="mt-auto pt-3 border-top border-secondary">
-            <div class="text-white-50 small mb-2"><i class="bi bi-person-circle me-1"></i>@Context.Session.GetString("Username")</div>
-            <a asp-controller="Account" asp-action="Logout" class="btn btn-outline-light btn-sm w-100">
-                <i class="bi bi-box-arrow-right me-1"></i>Çıkış Yap
-            </a>
-        </div>
-    </nav>
+    <div style="display:flex; min-height:100vh;">
+        <aside class="lms-sidebar">
+            <div class="lms-brand">
+                <div class="lms-brand-icon"><i class="bi bi-book-half"></i></div>
+                <div>
+                    <div class="lms-brand-title">LibraryMS</div>
+                    <div class="lms-brand-sub">Yönetim Paneli</div>
+                </div>
+            </div>
+            <ul class="lms-nav">
+                <li>
+                    <a class="@(isHome ? "active" : "")" asp-controller="Home" asp-action="Index">
+                        <i class="bi bi-house-door"></i><span>Ana Sayfa</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="@(isBooks ? "active" : "")" asp-controller="Book" asp-action="Index">
+                        <i class="bi bi-book"></i><span>Kitaplar</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="@(isCategories ? "active" : "")" asp-controller="Book" asp-action="CategoryIndex">
+                        <i class="bi bi-diagram-3"></i><span>Kategoriler</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="@(isAuthors ? "active" : "")" asp-controller="Author" asp-action="Index">
+                        <i class="bi bi-person"></i><span>Yazarlar</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="@(isOrders ? "active" : "")" asp-controller="Author" asp-action="OrderIndex">
+                        <i class="bi bi-cart3"></i><span>Siparişler</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="@(isReport ? "active" : "")" asp-controller="Home" asp-action="Report">
+                        <i class="bi bi-bar-chart"></i><span>Kitap Raporu</span>
+                    </a>
+                </li>
+            </ul>
+            <div class="lms-sidebar-footer">
+                <a href="#"><i class="bi bi-gear"></i><span>Ayarlar</span></a>
+                <a asp-controller="Account" asp-action="Logout"><i class="bi bi-box-arrow-right"></i><span>Çıkış Yap</span></a>
+            </div>
+        </aside>
 
-    <!-- Main -->
-    <div class="flex-grow-1">
-        <main class="main-content">
-            @if (TempData["Success"] != null)
-            {
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <i class="bi bi-check-circle-fill me-2"></i>@TempData["Success"]
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        <div class="lms-main">
+            <header class="lms-topbar">
+                <div class="lms-search">
+                    <i class="bi bi-search"></i>
+                    <input type="text" placeholder="Kitap, yazar veya kategori ara..." />
                 </div>
-            }
-            @if (TempData["Error"] != null)
-            {
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <i class="bi bi-exclamation-triangle-fill me-2"></i>@TempData["Error"]
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                <div class="lms-topbar-actions">
+                    <button class="lms-icon-btn" type="button"><i class="bi bi-bell"></i></button>
+                    <button class="lms-icon-btn" type="button"><i class="bi bi-question-circle"></i></button>
+                    <div class="lms-avatar">@(Context.Session.GetString("Username")?.Substring(0,1).ToUpper())</div>
                 </div>
-            }
-            @RenderBody()
-        </main>
+            </header>
+            <main class="lms-content">
+                @if (TempData["Success"] != null)
+                {
+                    <div class="alert alert-success alert-dismissible fade show" role="alert" style="border:none; background:#d6f5e3; color:#0b6b34; border-radius:10px;">
+                        <i class="bi bi-check-circle-fill me-2"></i>@TempData["Success"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                }
+                @if (TempData["Error"] != null)
+                {
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert" style="border:none; background:#ffdad6; color:#93000a; border-radius:10px;">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>@TempData["Error"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                }
+                @RenderBody()
+            </main>
+        </div>
     </div>
-</div>
 }
 else
 {

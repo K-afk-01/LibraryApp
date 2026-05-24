@@ -132,3 +132,4 @@ C:\Users\abdul\OneDrive\Masaüstü\LibraryMS\obj\Debug\net8.0\refint\LibraryMS.d
 C:\Users\abdul\OneDrive\Masaüstü\LibraryMS\obj\Debug\net8.0\LibraryMS.pdb
 C:\Users\abdul\OneDrive\Masaüstü\LibraryMS\obj\Debug\net8.0\LibraryMS.genruntimeconfig.cache
 C:\Users\abdul\OneDrive\Masaüstü\LibraryMS\obj\Debug\net8.0\ref\LibraryMS.dll
+C:\Users\abdul\OneDrive\Masaüstü\LibraryMS\obj\Debug\net8.0\LibraryMS.sourcelink.json

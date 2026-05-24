@@ -2,50 +2,67 @@
 @{
     ViewData["Title"] = "Yazarlar";
 }
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="fw-bold"><i class="bi bi-person-lines-fill me-2 text-success"></i>Yazarlar</h2>
-    <a asp-action="Create" class="btn btn-success"><i class="bi bi-person-plus me-1"></i>Yeni Yazar</a>
+<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+    <h1 class="lms-page-title"><i class="bi bi-person" style="color:#45464e;"></i>Yazarlar</h1>
+    <a asp-action="Create" class="lms-btn-success"><i class="bi bi-plus-lg"></i>Yeni Yazar</a>
 </div>
-<div class="card">
-    <div class="card-body p-0">
-        <table class="table table-hover mb-0">
-            <thead class="table-light">
+
+<div class="lms-card">
+    <div style="padding:14px 20px;border-bottom:1px solid var(--lms-border);display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;">
+        <div class="lms-search" style="max-width:320px;flex-grow:1;">
+            <i class="bi bi-search"></i>
+            <input type="text" placeholder="Yazar ara..." />
+        </div>
+        <button class="lms-icon-action"><i class="bi bi-funnel"></i></button>
+    </div>
+    <div class="table-responsive">
+        <table class="lms-table">
+            <thead>
                 <tr>
-                    <th>Ad</th>
-                    <th>Soyad</th>
+                    <th>Ad Soyad</th>
                     <th>E-posta</th>
                     <th>Doğum Tarihi</th>
                     <th>Kitap Sayısı</th>
-                    <th class="text-center">İşlemler</th>
+                    <th class="text-end">İşlemler</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var item in Model)
                 {
                     <tr>
-                        <td>@item.FirstName</td>
-                        <td class="fw-semibold">@item.LastName</td>
-                        <td><a href="mailto:@item.Email">@(item.Email ?? "-")</a></td>
-                        <td>@(item.BirthDate?.ToString("dd.MM.yyyy") ?? "-")</td>
-                        <td><span class="badge bg-success">@(item.Books?.Count ?? 0) kitap</span></td>
-                        <td class="text-center">
-                            <a asp-action="Details" asp-route-id="@item.AuthorId" class="btn btn-outline-info btn-action" title="Detay">
-                                <i class="bi bi-eye"></i>
-                            </a>
-                            <a asp-action="Edit" asp-route-id="@item.AuthorId" class="btn btn-outline-warning btn-action" title="Düzenle">
-                                <i class="bi bi-pencil-square"></i>
-                            </a>
-                            <a asp-action="Delete" asp-route-id="@item.AuthorId" class="btn btn-outline-danger btn-action" title="Sil">
-                                <i class="bi bi-trash3"></i>
-                            </a>
+                        <td>
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="lms-avatar-circle">@((item.FirstName?.Length > 0 ? item.FirstName.Substring(0,1) : "") + (item.LastName?.Length > 0 ? item.LastName.Substring(0,1) : ""))</div>
+                                <span style="font-weight:600;color:#081534;">@item.FirstName @item.LastName</span>
+                            </div>
+                        </td>
+                        <td>
+                            @if (!string.IsNullOrEmpty(item.Email))
+                            {
+                                <a href="mailto:@item.Email" style="color:#2170e4;text-decoration:none;">@item.Email</a>
+                            }
+                            else
+                            {
+                                <span style="color:#76777f;font-style:italic;">Belirtilmemiş</span>
+                            }
+                        </td>
+                        <td>@(item.BirthDate?.ToString("d MMMM yyyy") ?? "Bilinmiyor")</td>
+                        <td><span class="lms-badge lms-badge-green">@(item.Books?.Count ?? 0) Kitap</span></td>
+                        <td class="text-end">
+                            <a asp-action="Details" asp-route-id="@item.AuthorId" class="lms-icon-action" title="Detay"><i class="bi bi-eye"></i></a>
+                            <a asp-action="Edit" asp-route-id="@item.AuthorId" class="lms-icon-action" title="Düzenle"><i class="bi bi-pencil"></i></a>
+                            <a asp-action="Delete" asp-route-id="@item.AuthorId" class="lms-icon-action danger" title="Sil"><i class="bi bi-trash3"></i></a>
                         </td>
                     </tr>
                 }
                 @if (!Model.Any())
                 {
-                    <tr><td colspan="6" class="text-center text-muted py-4"><i class="bi bi-inbox fs-3 d-block mb-2"></i>Henüz yazar eklenmemiş.</td></tr>
+                    <tr><td colspan="5" class="text-center text-muted py-5"><i class="bi bi-inbox fs-3 d-block mb-2"></i>Henüz yazar eklenmemiş.</td></tr>
                 }
             </tbody>
         </table>
+    </div>
+    <div style="padding:14px 20px;border-top:1px solid var(--lms-border);display:flex;justify-content:space-between;align-items:center;color:#76777f;font-size:0.88rem;">
+        <span>Toplam @Model.Count() yazar listeleniyor</span>
     </div>
 </div>

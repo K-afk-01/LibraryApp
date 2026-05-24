@@ -2,36 +2,78 @@
 @{
     ViewData["Title"] = "Yazar Detayı";
 }
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="fw-bold"><i class="bi bi-person-lines-fill me-2 text-info"></i>Yazar Detayı</h2>
-    <a asp-action="Index" class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-1"></i>Geri</a>
-</div>
-<div class="card">
-    <div class="card-header bg-info text-white">
-        <h5 class="mb-0"><i class="bi bi-person-circle me-2"></i>@Model.FullName</h5>
+<div class="d-flex justify-content-between align-items-start mb-3 flex-wrap gap-2">
+    <div>
+        <h1 class="lms-page-title">Yazar Detayı</h1>
+        <p class="lms-page-sub">Yazar bilgileri ve eserleri görüntüleniyor.</p>
     </div>
-    <div class="card-body">
-        <dl class="row">
-            <dt class="col-sm-3">E-posta</dt><dd class="col-sm-9"><a href="mailto:@Model.Email">@(Model.Email ?? "-")</a></dd>
-            <dt class="col-sm-3">Doğum Tarihi</dt><dd class="col-sm-9">@(Model.BirthDate?.ToString("dd MMMM yyyy") ?? "-")</dd>
-            <dt class="col-sm-3">Biyografi</dt><dd class="col-sm-9">@(Model.Bio ?? "-")</dd>
-        </dl>
+    <div class="d-flex gap-2">
+        <a asp-action="Edit" asp-route-id="@Model.AuthorId" class="lms-btn-outline"><i class="bi bi-pencil"></i>Düzenle</a>
+        <a asp-action="Delete" asp-route-id="@Model.AuthorId" class="lms-btn-danger"><i class="bi bi-trash3"></i>Sil</a>
+    </div>
+</div>
+
+<div class="lms-card mb-3" style="border-top:4px solid #2170e4;">
+    <div class="lms-card-body">
+        <div class="d-flex gap-3 align-items-start">
+            <div style="width:56px;height:56px;border-radius:50%;background:#eef0f5;color:#45464e;display:flex;align-items:center;justify-content:center;font-size:1.3rem;">
+                <i class="bi bi-person"></i>
+            </div>
+            <div style="flex-grow:1;">
+                <h2 style="font-weight:700;color:#081534;margin:0;font-size:1.4rem;">@Model.FullName</h2>
+                <div style="color:#76777f;font-size:0.88rem;">Türk Edebiyatı</div>
+            </div>
+        </div>
+        <div class="row g-3 mt-3">
+            <div class="col-md-6">
+                <div style="font-size:0.78rem;color:#76777f;font-weight:600;">Email</div>
+                <div>
+                    @if (!string.IsNullOrEmpty(Model.Email))
+                    {
+                        <a href="mailto:@Model.Email" style="color:#2170e4;text-decoration:none;">@Model.Email</a>
+                    }
+                    else
+                    {
+                        <span style="color:#76777f;font-style:italic;">Belirtilmemiş</span>
+                    }
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div style="font-size:0.78rem;color:#76777f;font-weight:600;">Doğum Tarihi</div>
+                <div>@(Model.BirthDate?.ToString("d MMMM yyyy") ?? "Bilinmiyor")</div>
+            </div>
+            <div class="col-12">
+                <div style="font-size:0.78rem;color:#76777f;font-weight:600;margin-bottom:4px;">Biyografi</div>
+                <div style="color:#191c1f;line-height:1.6;">@(Model.Bio ?? "Bilgi bulunmamaktadır.")</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="lms-card">
+    <div style="padding:14px 20px;border-bottom:1px solid var(--lms-border);display:flex;justify-content:space-between;align-items:center;">
+        <div style="font-weight:700;color:#081534;display:flex;align-items:center;gap:8px;"><i class="bi bi-book"></i>Kitapları</div>
+        <span class="lms-badge lms-badge-gray">@(Model.Books?.Count ?? 0) Eser</span>
+    </div>
+    <div class="lms-card-body">
         @if (Model.Books != null && Model.Books.Any())
         {
-            <h6 class="mt-3 fw-bold"><i class="bi bi-book me-2"></i>Kitapları</h6>
-            <ul class="list-group list-group-flush">
+            <div class="row g-3">
                 @foreach (var book in Model.Books)
                 {
-                    <li class="list-group-item d-flex justify-content-between">
-                        <span>@book.Title</span>
-                        <span class="badge bg-success">@book.Price.ToString("C2")</span>
-                    </li>
+                    <div class="col-md-4">
+                        <div style="border:1px solid var(--lms-border);border-radius:10px;padding:14px;">
+                            <div style="font-weight:600;color:#081534;margin-bottom:6px;">@book.Title</div>
+                            <div style="color:#76777f;font-size:0.85rem;">@(book.Category?.Name ?? "Kategori yok")</div>
+                            <div style="margin-top:8px;"><span class="lms-badge lms-badge-yellow">@book.Price.ToString("C2")</span></div>
+                        </div>
+                    </div>
                 }
-            </ul>
+            </div>
         }
-        <div class="d-flex gap-2 mt-3">
-            <a asp-action="Edit" asp-route-id="@Model.AuthorId" class="btn btn-warning"><i class="bi bi-pencil-square me-1"></i>Düzenle</a>
-            <a asp-action="Delete" asp-route-id="@Model.AuthorId" class="btn btn-danger"><i class="bi bi-trash3 me-1"></i>Sil</a>
-        </div>
+        else
+        {
+            <div class="text-center text-muted py-4"><i class="bi bi-inbox fs-3 d-block mb-2"></i>Henüz kitap yok.</div>
+        }
     </div>
 </div>

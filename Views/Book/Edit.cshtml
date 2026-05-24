@@ -2,57 +2,58 @@
 @{
     ViewData["Title"] = "Kitap Düzenle";
 }
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="fw-bold"><i class="bi bi-pencil-square me-2 text-warning"></i>Kitap Düzenle</h2>
-    <a asp-action="Index" class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-1"></i>Geri</a>
+<div class="d-flex align-items-center gap-2 mb-3">
+    <a asp-action="Index" class="lms-icon-action" title="Geri"><i class="bi bi-arrow-left"></i></a>
+    <h1 class="lms-page-title">Kitap Düzenle</h1>
 </div>
-<div class="card">
-    <div class="card-body">
+
+<div class="lms-card">
+    <div class="lms-card-body">
         <form asp-action="Edit">
             <input type="hidden" asp-for="BookId" />
-            <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert" style="border:none;background:#ffdad6;color:#93000a;border-radius:8px;"></div>
             <div class="row g-3">
-                <div class="col-md-6">
-                    <label asp-for="Title" class="form-label fw-semibold"></label>
-                    <input asp-for="Title" class="form-control" />
+                <div class="col-12">
+                    <label asp-for="Title" class="lms-label">Kitap Adı</label>
+                    <input asp-for="Title" class="lms-input" />
                     <span asp-validation-for="Title" class="text-danger small"></span>
                 </div>
                 <div class="col-md-6">
-                    <label asp-for="ISBN" class="form-label fw-semibold"></label>
-                    <input asp-for="ISBN" class="form-control" />
+                    <label asp-for="ISBN" class="lms-label">ISBN</label>
+                    <input asp-for="ISBN" class="lms-input" />
                     <span asp-validation-for="ISBN" class="text-danger small"></span>
                 </div>
-                <div class="col-md-4">
-                    <label asp-for="Price" class="form-label fw-semibold"></label>
-                    <div class="input-group">
-                        <span class="input-group-text">₺</span>
-                        <input asp-for="Price" class="form-control" />
+                <div class="col-md-6">
+                    <label asp-for="Price" class="lms-label">Fiyat</label>
+                    <div style="position:relative;">
+                        <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:#76777f;">₺</span>
+                        <input asp-for="Price" class="lms-input" style="padding-left:32px;" />
                     </div>
                     <span asp-validation-for="Price" class="text-danger small"></span>
                 </div>
-                <div class="col-md-4">
-                    <label asp-for="Stock" class="form-label fw-semibold"></label>
-                    <input asp-for="Stock" class="form-control" type="number" min="0" />
-                </div>
-                <div class="col-md-4">
-                    <label asp-for="PublishDate" class="form-label fw-semibold"></label>
-                    <input asp-for="PublishDate" class="form-control" type="date" />
-                </div>
                 <div class="col-md-6">
-                    <label asp-for="AuthorId" class="form-label fw-semibold"><i class="bi bi-person me-1"></i>Yazar</label>
-                    <select asp-for="AuthorId" asp-items="ViewBag.AuthorId" class="form-select"></select>
+                    <label asp-for="AuthorId" class="lms-label">Yazar</label>
+                    <select asp-for="AuthorId" asp-items="ViewBag.AuthorId" class="lms-select"></select>
                     <span asp-validation-for="AuthorId" class="text-danger small"></span>
                 </div>
                 <div class="col-md-6">
-                    <label asp-for="CategoryId" class="form-label fw-semibold"><i class="bi bi-tag me-1"></i>Kategori</label>
-                    <select asp-for="CategoryId" asp-items="ViewBag.CategoryId" class="form-select"></select>
+                    <label asp-for="CategoryId" class="lms-label">Kategori</label>
+                    <select asp-for="CategoryId" asp-items="ViewBag.CategoryId" class="lms-select"></select>
                     <span asp-validation-for="CategoryId" class="text-danger small"></span>
                 </div>
+                <div class="col-md-6">
+                    <label asp-for="PublishDate" class="lms-label">Yayın Tarihi</label>
+                    <input asp-for="PublishDate" class="lms-input" type="date" />
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="Stock" class="lms-label">Stok</label>
+                    <input asp-for="Stock" class="lms-input" type="number" min="0" />
+                </div>
             </div>
-            <hr class="mt-4" />
-            <div class="d-flex gap-2">
-                <button type="submit" class="btn btn-warning"><i class="bi bi-floppy me-1"></i>Güncelle</button>
-                <a asp-action="Index" class="btn btn-outline-secondary"><i class="bi bi-x-circle me-1"></i>İptal</a>
+            <hr style="margin:24px 0;border-color:#e7e8ec;" />
+            <div class="d-flex justify-content-end gap-2">
+                <a asp-action="Index" class="lms-btn-outline">İptal</a>
+                <button type="submit" class="lms-btn-primary"><i class="bi bi-floppy"></i>Güncelle</button>
             </div>
         </form>
     </div>

@@ -2,41 +2,38 @@
 @{
     ViewData["Title"] = "Kategoriler";
 }
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="fw-bold"><i class="bi bi-tags me-2 text-warning"></i>Kategoriler</h2>
-    <a asp-action="CategoryCreate" class="btn btn-warning text-dark"><i class="bi bi-plus-circle me-1"></i>Yeni Kategori</a>
+<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+    <h1 class="lms-page-title"><i class="bi bi-tag-fill" style="color:#45464e;"></i>Kategoriler</h1>
+    <a asp-action="CategoryCreate" class="lms-btn-warning"><i class="bi bi-plus-lg"></i>Yeni Kategori</a>
 </div>
-<div class="card">
-    <div class="card-body p-0">
-        <table class="table table-hover mb-0">
-            <thead class="table-light">
+
+<div class="lms-card">
+    <div class="table-responsive">
+        <table class="lms-table">
+            <thead>
                 <tr>
-                    <th><i class="bi bi-tag me-1"></i>Kategori Adı</th>
-                    <th><i class="bi bi-text-paragraph me-1"></i>Açıklama</th>
-                    <th><i class="bi bi-book me-1"></i>Kitap Sayısı</th>
-                    <th class="text-center">İşlemler</th>
+                    <th>Kategori Adı</th>
+                    <th>Açıklama</th>
+                    <th>Kitap Sayısı</th>
+                    <th class="text-end">İşlemler</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var item in Model)
                 {
                     <tr>
-                        <td class="fw-semibold">@item.Name</td>
-                        <td class="text-muted">@(item.Description ?? "-")</td>
-                        <td><span class="badge bg-primary">@(item.Books?.Count ?? 0) kitap</span></td>
-                        <td class="text-center">
-                            <a asp-action="CategoryEdit" asp-route-id="@item.CategoryId" class="btn btn-outline-warning btn-action" title="Düzenle">
-                                <i class="bi bi-pencil-square"></i>
-                            </a>
-                            <a asp-action="CategoryDelete" asp-route-id="@item.CategoryId" class="btn btn-outline-danger btn-action" title="Sil">
-                                <i class="bi bi-trash3"></i>
-                            </a>
+                        <td style="font-weight:600;color:#081534;">@item.Name</td>
+                        <td style="color:#45464e;">@(item.Description ?? "-")</td>
+                        <td><span class="lms-badge lms-badge-blue">@(item.Books?.Count ?? 0)</span></td>
+                        <td class="text-end">
+                            <a asp-action="CategoryEdit" asp-route-id="@item.CategoryId" class="lms-icon-action" title="Düzenle"><i class="bi bi-pencil"></i></a>
+                            <a asp-action="CategoryDelete" asp-route-id="@item.CategoryId" class="lms-icon-action danger" title="Sil"><i class="bi bi-trash3"></i></a>
                         </td>
                     </tr>
                 }
                 @if (!Model.Any())
                 {
-                    <tr><td colspan="4" class="text-center text-muted py-4"><i class="bi bi-inbox fs-3 d-block mb-2"></i>Henüz kategori eklenmemiş.</td></tr>
+                    <tr><td colspan="4" class="text-center text-muted py-5"><i class="bi bi-inbox fs-3 d-block mb-2"></i>Henüz kategori eklenmemiş.</td></tr>
                 }
             </tbody>
         </table>

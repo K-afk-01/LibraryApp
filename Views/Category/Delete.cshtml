@@ -2,27 +2,35 @@
 @{
     ViewData["Title"] = "Kategori Sil";
 }
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="fw-bold text-danger"><i class="bi bi-trash3 me-2"></i>Kategori Sil</h2>
-    <a asp-action="CategoryIndex" class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-1"></i>Geri</a>
-</div>
-<div class="card border-danger">
-    <div class="card-header bg-danger text-white">
-        <h5 class="mb-0"><i class="bi bi-exclamation-triangle me-2"></i>Silme Onayı</h5>
-    </div>
-    <div class="card-body">
-        <div class="alert alert-warning"><i class="bi bi-exclamation-circle me-2"></i>Bu kategoriyi silmek istediğinizden emin misiniz?</div>
-        <dl class="row">
-            <dt class="col-sm-3">Kategori Adı</dt><dd class="col-sm-9 fw-bold">@Model.Name</dd>
-            <dt class="col-sm-3">Açıklama</dt><dd class="col-sm-9">@(Model.Description ?? "-")</dd>
-            <dt class="col-sm-3">Kitap Sayısı</dt><dd class="col-sm-9"><span class="badge bg-primary">@(Model.Books?.Count ?? 0)</span></dd>
-        </dl>
-        <form asp-action="CategoryDelete">
-            <input type="hidden" asp-for="CategoryId" />
-            <div class="d-flex gap-2">
-                <button type="submit" class="btn btn-danger"><i class="bi bi-trash3 me-1"></i>Evet, Sil</button>
-                <a asp-action="CategoryIndex" class="btn btn-outline-secondary"><i class="bi bi-x-circle me-1"></i>Vazgeç</a>
+<div class="d-flex justify-content-center" style="padding-top:20px;">
+    <div class="lms-card" style="max-width:560px;width:100%;">
+        <div class="lms-card-body" style="text-align:center;padding-top:28px;">
+            <div style="width:56px;height:56px;border-radius:50%;background:#ffdad6;color:#dc2626;display:inline-flex;align-items:center;justify-content:center;font-size:1.4rem;margin-bottom:14px;">
+                <i class="bi bi-trash3"></i>
             </div>
-        </form>
+            <h3 style="font-weight:700;color:#081534;margin:0;">Kategoriyi Sil</h3>
+            <p style="color:#76777f;margin-top:8px;">Aşağıdaki kategoriyi kalıcı olarak silmek üzeresiniz. Bu işlem geri alınamaz.</p>
+
+            <div style="background:#fafbfd;border-radius:10px;padding:6px 16px;margin:18px 0;text-align:left;">
+                <div class="d-flex justify-content-between" style="padding:12px 0;border-bottom:1px solid #f1f2f4;"><span style="color:#76777f;">Kategori Adı</span><span style="font-weight:700;">@Model.Name</span></div>
+                <div class="d-flex justify-content-between" style="padding:12px 0;border-bottom:1px solid #f1f2f4;"><span style="color:#76777f;">Açıklama</span><span style="font-weight:600;text-align:right;">@(Model.Description ?? "-")</span></div>
+                <div class="d-flex justify-content-between align-items-center" style="padding:12px 0;"><span style="color:#76777f;">Bağlı Kitap Sayısı</span><span class="lms-badge lms-badge-gray"><i class="bi bi-book"></i> @(Model.Books?.Count ?? 0)</span></div>
+            </div>
+
+            <div style="background:#ffdad6;border-radius:10px;padding:14px 16px;display:flex;gap:12px;color:#93000a;text-align:left;">
+                <i class="bi bi-exclamation-triangle" style="font-size:1.1rem;"></i>
+                <div>
+                    <div style="font-weight:700;">Dikkat</div>
+                    <div style="font-size:0.88rem;">Bu kategoriye ait kitaplar da etkilenebilir.</div>
+                </div>
+            </div>
+        </div>
+        <div style="padding:16px 24px;background:#fafbfd;border-top:1px solid var(--lms-border);border-radius:0 0 12px 12px;display:flex;justify-content:flex-end;gap:10px;">
+            <a asp-action="CategoryIndex" class="lms-btn-outline">İptal</a>
+            <form asp-action="CategoryDelete" style="display:inline;">
+                <input type="hidden" asp-for="CategoryId" />
+                <button type="submit" class="lms-btn-danger"><i class="bi bi-trash3"></i>Sil</button>
+            </form>
+        </div>
     </div>
 </div>

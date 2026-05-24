@@ -2,27 +2,39 @@
 @{
     ViewData["Title"] = "Yazar Sil";
 }
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="fw-bold text-danger"><i class="bi bi-trash3 me-2"></i>Yazar Sil</h2>
-    <a asp-action="Index" class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-1"></i>Geri</a>
-</div>
-<div class="card border-danger">
-    <div class="card-header bg-danger text-white">
-        <h5 class="mb-0"><i class="bi bi-exclamation-triangle me-2"></i>Silme Onayı</h5>
-    </div>
-    <div class="card-body">
-        <div class="alert alert-warning"><i class="bi bi-exclamation-circle me-2"></i>Bu yazarı silmek istediğinizden emin misiniz?</div>
-        <dl class="row">
-            <dt class="col-sm-3">Ad Soyad</dt><dd class="col-sm-9 fw-bold">@Model.FullName</dd>
-            <dt class="col-sm-3">E-posta</dt><dd class="col-sm-9">@(Model.Email ?? "-")</dd>
-            <dt class="col-sm-3">Kitap Sayısı</dt><dd class="col-sm-9"><span class="badge bg-primary">@(Model.Books?.Count ?? 0)</span></dd>
-        </dl>
-        <form asp-action="Delete">
-            <input type="hidden" asp-for="AuthorId" />
-            <div class="d-flex gap-2">
-                <button type="submit" class="btn btn-danger"><i class="bi bi-trash3 me-1"></i>Evet, Sil</button>
-                <a asp-action="Index" class="btn btn-outline-secondary"><i class="bi bi-x-circle me-1"></i>Vazgeç</a>
+<div class="d-flex justify-content-center" style="padding-top:20px;">
+    <div class="lms-card" style="max-width:560px;width:100%;">
+        <div style="padding:18px 24px;border-bottom:1px solid var(--lms-border);display:flex;justify-content:space-between;align-items:center;background:#fafbfd;border-radius:12px 12px 0 0;">
+            <div style="font-weight:700;font-size:1.05rem;color:#081534;">Yazarı Sil</div>
+            <a asp-action="Index" class="lms-icon-action"><i class="bi bi-x-lg"></i></a>
+        </div>
+        <div class="lms-card-body">
+            <div class="d-flex align-items-center gap-3 mb-3">
+                <div style="width:48px;height:48px;border-radius:50%;background:#eef0f5;color:#45464e;display:flex;align-items:center;justify-content:center;font-size:1.2rem;">
+                    <i class="bi bi-person"></i>
+                </div>
+                <div>
+                    <div style="font-weight:700;color:#081534;">@Model.FullName</div>
+                    <div style="color:#76777f;font-size:0.88rem;">@(Model.Email ?? "-")</div>
+                </div>
             </div>
-        </form>
+
+            <div style="background:#ffdad6;border-radius:10px;padding:14px 16px;display:flex;gap:12px;color:#93000a;margin-bottom:14px;">
+                <i class="bi bi-exclamation-triangle" style="font-size:1.1rem;"></i>
+                <div>
+                    <div style="font-weight:700;">Dikkat: Yazarın kitapları var</div>
+                    <div style="font-size:0.88rem;">Bu yazarın sistemde kayıtlı <strong>@(Model.Books?.Count ?? 0) adet kitabı</strong> bulunmaktadır. Yazarı silmek, ona ait tüm kitap kayıtlarını etkileyebilir. İşleme devam etmek istediğinize emin misiniz?</div>
+                </div>
+            </div>
+
+            <p style="margin:0;color:#191c1f;">Bu işlem geri alınamaz. <strong>@Model.FullName</strong> isimli yazar kalıcı olarak silinecektir.</p>
+        </div>
+        <div style="padding:16px 24px;background:#fafbfd;border-top:1px solid var(--lms-border);border-radius:0 0 12px 12px;display:flex;justify-content:flex-end;gap:10px;">
+            <a asp-action="Index" class="lms-btn-outline">İptal</a>
+            <form asp-action="Delete" style="display:inline;">
+                <input type="hidden" asp-for="AuthorId" />
+                <button type="submit" class="lms-btn-danger"><i class="bi bi-trash3"></i>Sil</button>
+            </form>
+        </div>
     </div>
 </div>

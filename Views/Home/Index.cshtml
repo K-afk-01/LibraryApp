@@ -3,80 +3,104 @@
     var stats = ViewBag.Stats;
 }
 
-<div class="row mb-4">
-    <div class="col-12">
-        <h2 class="fw-bold text-dark"><i class="bi bi-house-door me-2 text-primary"></i>Ana Sayfa</h2>
-        <p class="text-muted">LibraryMS Kitap Yönetim Sistemine hoş geldiniz.</p>
-    </div>
-</div>
+<h1 class="lms-page-title">Ana Sayfa</h1>
 
-<!-- İstatistik Kartları -->
-<div class="row g-3 mb-4">
-    <div class="col-md-3">
-        <div class="card stat-card p-3 text-center">
-            <i class="bi bi-book" style="font-size:2rem;"></i>
-            <h3 class="mt-2 mb-0 fw-bold">@stats.Books</h3>
-            <p class="mb-0 opacity-75">Toplam Kitap</p>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="card p-3 text-center" style="background:linear-gradient(135deg,#00695c,#00897b);color:white;border-radius:12px;">
-            <i class="bi bi-person-lines-fill" style="font-size:2rem;"></i>
-            <h3 class="mt-2 mb-0 fw-bold">@stats.Authors</h3>
-            <p class="mb-0 opacity-75">Toplam Yazar</p>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="card p-3 text-center" style="background:linear-gradient(135deg,#e65100,#ef6c00);color:white;border-radius:12px;">
-            <i class="bi bi-tags" style="font-size:2rem;"></i>
-            <h3 class="mt-2 mb-0 fw-bold">@stats.Categories</h3>
-            <p class="mb-0 opacity-75">Toplam Kategori</p>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="card p-3 text-center" style="background:linear-gradient(135deg,#4a148c,#6a1b9a);color:white;border-radius:12px;">
-            <i class="bi bi-cart3" style="font-size:2rem;"></i>
-            <h3 class="mt-2 mb-0 fw-bold">@stats.Orders</h3>
-            <p class="mb-0 opacity-75">Toplam Sipariş</p>
-        </div>
-    </div>
-</div>
-
-<!-- Hızlı Erişim -->
-<div class="row g-3">
-    <div class="col-md-6">
-        <div class="card">
-            <div class="card-header bg-primary text-white">
-                <h5 class="mb-0"><i class="bi bi-lightning-charge me-2"></i>Hızlı Erişim</h5>
+<div class="row g-3 mt-2">
+    <div class="col-lg-8">
+        <div class="row g-3">
+            <div class="col-md-6">
+                <div class="lms-card p-3" style="border-left:4px solid #2170e4;">
+                    <div class="d-flex align-items-center gap-3">
+                        <div style="width:48px;height:48px;border-radius:10px;background:#dae8ff;color:#0058be;display:flex;align-items:center;justify-content:center;font-size:1.3rem;">
+                            <i class="bi bi-book"></i>
+                        </div>
+                        <div>
+                            <div style="font-size:0.72rem;font-weight:600;color:#76777f;text-transform:uppercase;letter-spacing:0.04em;">Toplam Kitap</div>
+                            <div style="font-size:1.7rem;font-weight:700;color:#081534;">@stats.Books</div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="card-body">
-                <div class="d-flex flex-wrap gap-2">
-                    <a asp-controller="Book" asp-action="Create" class="btn btn-outline-primary">
-                        <i class="bi bi-plus-circle me-1"></i>Yeni Kitap
-                    </a>
-                    <a asp-controller="Author" asp-action="Create" class="btn btn-outline-success">
-                        <i class="bi bi-person-plus me-1"></i>Yeni Yazar
-                    </a>
-                    <a asp-controller="Book" asp-action="CategoryCreate" class="btn btn-outline-warning">
-                        <i class="bi bi-tag me-1"></i>Yeni Kategori
-                    </a>
-                    <a asp-controller="Author" asp-action="OrderCreate" class="btn btn-outline-info">
-                        <i class="bi bi-cart-plus me-1"></i>Yeni Sipariş
+            <div class="col-md-6">
+                <div class="lms-card p-3">
+                    <div class="d-flex align-items-center gap-3">
+                        <div style="width:48px;height:48px;border-radius:10px;background:#eef0f5;color:#45464e;display:flex;align-items:center;justify-content:center;font-size:1.3rem;">
+                            <i class="bi bi-person"></i>
+                        </div>
+                        <div>
+                            <div style="font-size:0.72rem;font-weight:600;color:#76777f;text-transform:uppercase;letter-spacing:0.04em;">Toplam Yazar</div>
+                            <div style="font-size:1.7rem;font-weight:700;color:#081534;">@stats.Authors</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="lms-card p-3">
+                    <div class="d-flex align-items-center gap-3">
+                        <div style="width:48px;height:48px;border-radius:10px;background:#fff0d9;color:#594317;display:flex;align-items:center;justify-content:center;font-size:1.3rem;">
+                            <i class="bi bi-diagram-3"></i>
+                        </div>
+                        <div>
+                            <div style="font-size:0.72rem;font-weight:600;color:#76777f;text-transform:uppercase;letter-spacing:0.04em;">Toplam Kategori</div>
+                            <div style="font-size:1.7rem;font-weight:700;color:#081534;">@stats.Categories</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="lms-card p-3" style="border-left:4px solid #dc2626;">
+                    <div class="d-flex align-items-center gap-3">
+                        <div style="width:48px;height:48px;border-radius:10px;background:#ffdad6;color:#93000a;display:flex;align-items:center;justify-content:center;font-size:1.3rem;">
+                            <i class="bi bi-cart3"></i>
+                        </div>
+                        <div>
+                            <div style="font-size:0.72rem;font-weight:600;color:#76777f;text-transform:uppercase;letter-spacing:0.04em;">Toplam Sipariş</div>
+                            <div style="font-size:1.7rem;font-weight:700;color:#081534;">@stats.Orders</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="lms-card p-3 d-flex align-items-center justify-content-between flex-wrap gap-3">
+                    <div>
+                        <div style="font-weight:600;font-size:1rem;color:#081534;">Raporlar ve Analizler</div>
+                        <div style="color:#76777f;font-size:0.85rem;max-width:480px;">Kütüphane envanteri ve kullanıcı aktiviteleri hakkında detaylı aylık raporları inceleyin.</div>
+                    </div>
+                    <a asp-controller="Home" asp-action="Report" class="lms-btn-success">
+                        <i class="bi bi-download"></i>Rapor İndir
                     </a>
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-md-6">
-        <div class="card">
-            <div class="card-header bg-success text-white">
-                <h5 class="mb-0"><i class="bi bi-file-earmark-bar-graph me-2"></i>Raporlar</h5>
-            </div>
-            <div class="card-body">
-                <p class="text-muted">Stored procedure kullanarak kitap raporu görüntüleyin.</p>
-                <a asp-controller="Home" asp-action="Report" class="btn btn-success">
-                    <i class="bi bi-file-earmark-bar-graph me-2"></i>Kitap Raporunu Görüntüle
-                </a>
+    <div class="col-lg-4">
+        <div class="lms-card p-3">
+            <div style="font-weight:600;font-size:1rem;color:#081534;margin-bottom:14px;">Hızlı Erişim</div>
+            <div class="row g-2">
+                <div class="col-6">
+                    <a asp-controller="Book" asp-action="Create" class="d-flex flex-column align-items-center justify-content-center text-decoration-none" style="background:#f2f3f7;border-radius:10px;padding:18px 8px;color:#081534;">
+                        <i class="bi bi-plus-circle" style="font-size:1.4rem;color:#2170e4;"></i>
+                        <span style="font-size:0.82rem;font-weight:600;margin-top:6px;">Yeni Kitap</span>
+                    </a>
+                </div>
+                <div class="col-6">
+                    <a asp-controller="Author" asp-action="OrderCreate" class="d-flex flex-column align-items-center justify-content-center text-decoration-none" style="background:#f2f3f7;border-radius:10px;padding:18px 8px;color:#081534;">
+                        <i class="bi bi-cart-plus" style="font-size:1.4rem;color:#2170e4;"></i>
+                        <span style="font-size:0.82rem;font-weight:600;margin-top:6px;">Yeni Sipariş</span>
+                    </a>
+                </div>
+                <div class="col-6">
+                    <a asp-controller="Home" asp-action="Report" class="d-flex flex-column align-items-center justify-content-center text-decoration-none" style="background:#f2f3f7;border-radius:10px;padding:18px 8px;color:#081534;">
+                        <i class="bi bi-file-earmark-bar-graph" style="font-size:1.4rem;color:#45464e;"></i>
+                        <span style="font-size:0.82rem;font-weight:600;margin-top:6px;">Rapor Al</span>
+                    </a>
+                </div>
+                <div class="col-6">
+                    <a href="#" class="d-flex flex-column align-items-center justify-content-center text-decoration-none" style="background:#f2f3f7;border-radius:10px;padding:18px 8px;color:#081534;">
+                        <i class="bi bi-gear" style="font-size:1.4rem;color:#45464e;"></i>
+                        <span style="font-size:0.82rem;font-weight:600;margin-top:6px;">Ayarlar</span>
+                    </a>
+                </div>
             </div>
         </div>
     </div>
